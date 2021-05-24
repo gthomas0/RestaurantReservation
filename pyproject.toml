@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "restaurantreservation"
+version = "0.1.0"
+description = "Full Stack Application for scheduling reservations to restaurants."
+authors = ["Gregory Thomas <gdenvert13@gmail.com>"]
+include = []
+
+[tool.poetry.dependencies]
+python = "3.7.5"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
