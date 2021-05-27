@@ -4,13 +4,18 @@ from sqlalchemy import exc
 import json
 from flask_cors import CORS
 
-from database.models import setup_db
-from auth.auth import AuthError, requires_auth
+from .database.models import setup_db
+from .auth.auth import AuthError, requires_auth
 
 
 app = Flask(__name__)
 setup_db(app)
 CORS(app)
+
+
+@app.route('/')
+def hello_world():
+    return 'Hello World!'
 
 
 @app.route('/hours', methods=['GET'])

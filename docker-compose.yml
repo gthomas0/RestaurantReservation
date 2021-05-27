@@ -22,7 +22,7 @@ services:
         build:
             context: ./RestaurantReservation/backend
             dockerfile: Dockerfile
-            target: develop
+            target: base
         entrypoint: ["bash"]
         volumes:
             - './RestaurantReservation/backend:/api'
@@ -31,6 +31,7 @@ services:
         environment:
             - FLASK_APP=api
             - FLASK_ENV=development
+            - DB_HOST='restaurantreservation_postgres-db_1:5432'
         container_name: api
         networks:
             restaurant_net:

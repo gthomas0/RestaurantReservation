@@ -5,7 +5,7 @@ ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-    apt-get install -y software-properties-common vim build-essential libssl-dev libffi-dev libpq-dev
+    apt-get install -y software-properties-common vim build-essential libpq-dev libssl-dev libffi-dev
 RUN add-apt-repository ppa:deadsnakes/ppa
 
 RUN apt-get install -y python3.7 python3.7-dev python3.7-venv && ln -sf python3.7 /usr/bin/python
