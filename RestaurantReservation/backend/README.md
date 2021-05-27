@@ -10,12 +10,11 @@ API_AUDIENCE = 'scheduler'
 ### Dependencies
 In order for this application to run, some dependencies need to be installed.  
 **Manual:**
+  * **Python 3.7.5** as our specific Python version
   * **venv** as a tool to create isolated Python environments
   * **postgres** as our database [install here](https://www.postgresql.org/download/)
+  * **Python Headers** `sudo apt-get install python3.7-dev`
 
-**Handled by requirements.txt:**
-  * **SQLAlchemy ORM** as our ORM Library
-  * **
 
 ### Running the Backend
 From within the `./backend` directory first ensure you are working using your created virtual environment, then pip install the requirements.

@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+    postgres-db:
+        restart: always
+        image: postgres:latest  
+        privileged: true  
+        ports:
+            - 5432:5432  
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres 
+            PGDATA: /var/lib/postgresql/data/pgdata 
+        volumes:
+            - ./RestaurantReservation/backend/src/database/postgres/data:/var/lib/postgresql/data/pgdata
+        networks:
+            restaurant_net:
+                aliases:
+                    - postgres_net
+
+    api:
+        build:
+            context: ./RestaurantReservation/backend
+            dockerfile: Dockerfile
+            target: develop
+        entrypoint: ["bash"]
+        volumes:
+            - './RestaurantReservation/backend:/api'
+        ports:
+            - 5000:5000
+        environment:
+            - FLASK_APP=api
+            - FLASK_ENV=development
+        container_name: api
+        networks:
+            restaurant_net:
+                aliases:
+                    - api_net
+
+networks:
+    restaurant_net:
+        driver: bridge
