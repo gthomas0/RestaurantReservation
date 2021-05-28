@@ -4,7 +4,7 @@ build:
 	docker-compose up -d --build
 
 develop:
-	docker run -it --rm -v=$(PWD)/RestaurantReservation/backend:/api --network=restaurantreservation_restaurant_net restaurantreservation_api:latest bash
+	docker run -it --rm -v=$(PWD)/RestaurantReservation/backend:/api --network=restaurantreservation_restaurant_net -p 5000:5000 restaurantreservation_api:latest bash
 
 api:
 	docker run -it --rm restaurantreservation_api:latest bash

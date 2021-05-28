@@ -4,7 +4,7 @@ from sqlalchemy import exc
 import json
 from flask_cors import CORS
 
-from .database.models import setup_db
+from .database.models import setup_db, Restaurant
 from .auth.auth import AuthError, requires_auth
 
 
@@ -18,15 +18,23 @@ def hello_world():
     return 'Hello World!'
 
 
-@app.route('/hours', methods=['GET'])
-@requires_auth('get:hours')
-def get_hours():
-    pass
+@app.route('/scedule', methods=['GET'])
+#@requires_auth('get:schedule')
+def get_schedule():
+    try:
+        restaurants = Restaurant.query.all()
 
+        return jsonify({
+            'success': True,
+            'restaurants': restaurants
+        })
+    except:
+        abort(404)
 
+"""
 @app.route('/schedule', methods=['POST'])
-@requires_auth('post:schedule')
-def post_schedule(jwt):
+#@requires_auth('post:schedule')
+def post_schedule():
     try:
         if request.method == 'POST':
             if request.files:
@@ -41,3 +49,12 @@ def post_schedule(jwt):
         })
     except:
         abort(422)
+"""
+
+@app.errorhandler(404)
+def resource_not_found(error):
+    return jsonify({
+        "success": False, 
+        "error": 404,
+        "message": "resource not found"
+    }), 404
