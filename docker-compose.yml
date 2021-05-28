@@ -23,7 +23,12 @@ services:
             context: ./RestaurantReservation/backend
             dockerfile: Dockerfile
             target: base
-        entrypoint: ["bash"]
+        command: >
+            bash -c "
+                source .venv/bin/activate &&
+                cd src &&
+                flask run --host $$(hostname -i)
+            "
         volumes:
             - './RestaurantReservation/backend:/api'
         ports:
@@ -31,7 +36,7 @@ services:
         environment:
             - FLASK_APP=api
             - FLASK_ENV=development
-            - DB_HOST='restaurantreservation_postgres-db_1:5432'
+            - DB_HOST=restaurantreservation_postgres-db_1:5432
         container_name: api
         networks:
             restaurant_net:
