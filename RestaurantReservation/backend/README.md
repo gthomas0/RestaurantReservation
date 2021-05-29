@@ -25,7 +25,7 @@ Now you can query the `/schedule` endpoint for open restaurants!
 `POST '/schedule'`
 - Post a csv file containing the restaurant schedules to populate the postgresql database
 - Request Arguments: csv file
-- Example cURL: `curl -G --data-urlencode "datetimestr=2021-05-29 12:23:53.350219" http://localhost:5000/schedule`
+- Example cURL: `curl -F "schedule=@$(pwd)/RestaurantReservation/backend/csv_data/schedule.csv" http://localhost:5000/schedule`
 - Example Response:
 ```json
 {
