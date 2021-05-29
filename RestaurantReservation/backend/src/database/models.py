@@ -64,11 +64,25 @@ class Restaurant(db.Model):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    sunday = Column(String)
+    monday = Column(String)
+    tuesday = Column(String)
+    wednesday = Column(String)
+    thursday = Column(String)
+    friday = Column(String)
+    saturday = Column(String)
     hours = Column(String)
     patrons = relationship('Reservation', back_populates='retaurant')
 
-    def __init__(self, name, hours):
+    def __init__(self, name, sunday, monday, tuesday, wednesday, thursday, friday, saturday, hours):
         self.name = name
+        self.sunday = sunday
+        self.monday = monday
+        self.tuesday = tuesday
+        self.wednesday = wednesday
+        self.thursday = thursday
+        self.friday = friday
+        self.saturday = saturday
         self.hours = hours
 
     def insert(self):
@@ -85,6 +99,13 @@ class Restaurant(db.Model):
     def format(self):
         return {
             'name': self.name,
+            'sunday': self.sunday,
+            'monday': self.monday,
+            'tuesday': self.tuesday,
+            'wednesday': self.wednesday,
+            'thursday': self.thursday,
+            'friday': self.friday,
+            'saturday': self.saturday,
             'hours': self.hours,
         }
 
