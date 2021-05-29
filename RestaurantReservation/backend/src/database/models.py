@@ -1,6 +1,7 @@
 import os
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
+from sqlalchemy_utils import database_exists, create_database
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
@@ -22,18 +23,25 @@ def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
+    if not database_exists(database_path):
+        create_database(database_path)
     db.create_all()
     migrate = Migrate(app, db)
 
 
-class Reservation(db.Model):
+def db_drop_and_create_all():
+    db.drop_all()
+    db.create_all()
+
+
+"""class Reservation(db.Model):
     __tablename__ = 'reservations'
 
     restaurant_id = Column(Integer, ForeignKey('restaurant.id'), primary_key=True)
     patron_id = Column(Integer, ForeignKey('patron.id'), primary_key=True)
     start_time = Column(DateTime, primary_key=True)
-    restaurant = relationship('Restaurant', back_populates='restaurants')
-    patron = relationship('Patron', back_populates='patrons')
+    restaurant = relationship('Restaurant', back_populates='patrons')
+    patron = relationship('Patron', back_populates='restaurants')
 
     def __init__(self, restaurant_id, patron_id, start_time):
         self.restaurant_id = restaurant_id,
@@ -59,6 +67,23 @@ class Reservation(db.Model):
         }
 
 
+class Patron(db.Model):
+    __tablename__ = 'patron'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    restaurants = relationship('Reservation', back_populates='patron')
+
+    def __init__(self, name):
+        self.name = name
+
+    def format(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+        }
+"""
+
 class Restaurant(db.Model):
     __tablename__ = 'restaurant'
 
@@ -72,7 +97,7 @@ class Restaurant(db.Model):
     friday = Column(String)
     saturday = Column(String)
     hours = Column(String)
-    patrons = relationship('Reservation', back_populates='retaurant')
+    #patrons = relationship('Reservation', back_populates='retaurant')
 
     def __init__(self, name, sunday, monday, tuesday, wednesday, thursday, friday, saturday, hours):
         self.name = name
@@ -99,29 +124,12 @@ class Restaurant(db.Model):
     def format(self):
         return {
             'name': self.name,
-            'sunday': self.sunday,
-            'monday': self.monday,
-            'tuesday': self.tuesday,
-            'wednesday': self.wednesday,
-            'thursday': self.thursday,
-            'friday': self.friday,
-            'saturday': self.saturday,
+            'Sun': self.sunday,
+            'Mon': self.monday,
+            'Tues': self.tuesday,
+            'Wed': self.wednesday,
+            'Thur': self.thursday,
+            'Fri': self.friday,
+            'Sat': self.saturday,
             'hours': self.hours,
-        }
-
-
-class Patron(db.Model):
-    __tablename__ = 'patron'
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    restaurants = relationship('Reservation', back_populates='patron')
-
-    def __init__(self, name):
-        self.name = name
-
-    def format(self):
-        return {
-            'id': self.id,
-            'name': self.name,
         }

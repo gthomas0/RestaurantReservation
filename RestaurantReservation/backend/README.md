@@ -1,35 +1,54 @@
-# Restaurant Reservation Backend
-
-## Connection Details
-### Auth0 Account
-```
-AUTH0_DOMAIN = 'fsnd-gt.us.auth0.com'
-API_AUDIENCE = 'scheduler'
-```
+# Restaurant Reservation Application
 
 ### Dependencies
 In order for this application to run, some dependencies need to be installed.  
-**Manual:**
-  * **Python 3.7.5** as our specific Python version
-  * **venv** as a tool to create isolated Python environments
-  * **postgres** as our database [install here](https://www.postgresql.org/download/)
-  * **Python Headers** `sudo apt-get install python3.7-dev`
+  * **Docker** This is the best way to run the application
 
 
-### Running the Backend
-From within the `./backend` directory first ensure you are working using your created virtual environment, then pip install the requirements.
-
-**Note:** You will need to install python3.7-dev for python headers for psycopg2 # WSL2/Linux
-
-Python Version: Python 3.7.5
+### Running the Application
+To start the application, from the root directory run the following:
 
 ```bash
-sudo apt-get install python3.7-dev
-pip install -r requirements.txt
+make build
 ```
 
-From within the `./backend/src`, run:
+After the docker services are running, post the csv file to the database:
+
 ```bash
-export FLASK_APP=api.py;
-flask run --reload
+curl -G --data-urlencode "datetimestr=2021-05-27 12:23:53.350219" http://localhost:5000/schedule
+```
+
+Now you can query the `/schedule` endpoint for open restaurants!
+
+## API Endpoints
+
+`POST '/schedule'`
+- Post a csv file containing the restaurant schedules to populate the postgresql database
+- Request Arguments: csv file
+- Example cURL: `curl -G --data-urlencode "datetimestr=2021-05-29 12:23:53.350219" http://localhost:5000/schedule`
+- Example Response:
+```json
+{
+  "success": true
+}
+```
+
+`GET '/schedule'`
+- Get a list of restaurant names which are open on a given day and time
+- Request Arguments: Python Datetime String
+- Example cURL: `curl -G --data-urlencode "datetimestr=2021-05-27 12:23:53.350219" http://localhost:5000/schedule`
+- Example Response:
+```json
+{
+  "restaurants": [
+    "The Cowfish Sushi Burger Bar",  
+    "Mandolin", 
+    "Neomonde", 
+    "Page Road Grill", 
+    "Mez Mexican", 
+    "Saltbox", 
+    "El Rodeo"
+  ], 
+  "success": true
+}
 ```
