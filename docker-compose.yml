@@ -3,14 +3,19 @@ version: '3.7'
 services:
     postgres-db:
         restart: always
-        image: postgres:latest  
-        privileged: true  
+        image: postgres:latest
+        privileged: true
+        healthcheck:
+            test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+            timeout: 45s
+            interval: 10s
+            retries: 10
         ports:
-            - 5432:5432  
+            - 5432:5432
         environment:
             POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: postgres 
-            PGDATA: /var/lib/postgresql/data/pgdata 
+            POSTGRES_PASSWORD: postgres
+            PGDATA: /var/lib/postgresql/data/pgdata
         volumes:
             - ./RestaurantReservation/backend/src/database/postgres/data:/var/lib/postgresql/data/pgdata
         networks:
@@ -37,7 +42,9 @@ services:
             - FLASK_APP=api
             - FLASK_ENV=development
             - DB_HOST=restaurantreservation_postgres-db_1:5432
-        container_name: api
+        depends_on:
+            postgres-db:
+                condition: service_healthy
         networks:
             restaurant_net:
                 aliases:
