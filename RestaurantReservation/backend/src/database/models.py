@@ -25,17 +25,11 @@ def setup_db(app, database_path=database_path):
     db.init_app(app)
     if not database_exists(database_path):
         create_database(database_path)
-    db.create_all()
     migrate = Migrate(app, db)
 
 
-def db_drop_and_create_all():
-    db.drop_all()
-    db.create_all()
-
-
-"""class Reservation(db.Model):
-    __tablename__ = 'reservations'
+class Reservation(db.Model):
+    __tablename__ = 'reservation'
 
     restaurant_id = Column(Integer, ForeignKey('restaurant.id'), primary_key=True)
     patron_id = Column(Integer, ForeignKey('patron.id'), primary_key=True)
@@ -82,7 +76,7 @@ class Patron(db.Model):
             'id': self.id,
             'name': self.name,
         }
-"""
+
 
 class Restaurant(db.Model):
     __tablename__ = 'restaurant'
@@ -97,7 +91,7 @@ class Restaurant(db.Model):
     friday = Column(String)
     saturday = Column(String)
     hours = Column(String)
-    #patrons = relationship('Reservation', back_populates='retaurant')
+    patrons = relationship('Reservation', back_populates='restaurant')
 
     def __init__(self, name, sunday, monday, tuesday, wednesday, thursday, friday, saturday, hours):
         self.name = name

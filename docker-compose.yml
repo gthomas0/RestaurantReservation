@@ -32,6 +32,7 @@ services:
             bash -c "
                 source .venv/bin/activate &&
                 cd src &&
+                flask db upgrade &&
                 flask run --host $$(hostname -i)
             "
         volumes:
