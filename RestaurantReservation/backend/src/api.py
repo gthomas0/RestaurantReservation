@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, abort
 from flask_cors import CORS
 from sqlalchemy import exc
 
-from .database.models import setup_db, db_drop_and_create_all, Restaurant
+from .database.models import setup_db, Restaurant
 from .auth.auth import AuthError, requires_auth
 from .utils.date_handler import get_datetime_range, get_day_column, get_day_range, get_time_range, get_weekday
 
@@ -13,9 +13,6 @@ from .utils.date_handler import get_datetime_range, get_day_column, get_day_rang
 app = Flask(__name__)
 setup_db(app)
 CORS(app)
-
-# Uncomment this to start fresh with the database
-# db_drop_and_create_all()
 
 
 @app.route('/schedule', methods=['GET', 'POST'])
