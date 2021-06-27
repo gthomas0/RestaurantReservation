@@ -1,24 +1,8 @@
-# Restaurant Reservation Application
+# Restaurant Reservation Backend
+The backend of this application is built in Flask with a Postgres database. Both are encapsulated in docker containers
+on the same docker network to enable communication on a private network. 
 
-### Dependencies
-In order for this application to run, some dependencies need to be installed.  
-  * **Docker** This is the best way to run the application
-
-
-### Running the Application
-To start the application, from the root directory run the following:
-
-```bash
-make build
-```
-
-After the docker services are running, post the csv file to the database:
-
-```bash
-curl -G --data-urlencode "datetimestr=2021-05-27 12:23:53.350219" http://localhost:5000/schedule
-```
-
-Now you can query the `/schedule` endpoint for open restaurants!
+Look at the main [`README`](./README.md) for more information on how to run the application in full.
 
 ## API Endpoints
 
