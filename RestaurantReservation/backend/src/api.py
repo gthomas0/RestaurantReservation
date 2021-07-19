@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, abort
 from flask_cors import CORS
 from sqlalchemy import exc
 
-from .database.models import setup_db, Restaurant
+from .database.models import setup_db, Restaurant, Patron
 from .auth.auth import AuthError, requires_auth
 from .utils.date_handler import get_datetime_range, get_day_column, get_day_range, get_time_range, get_weekday
 
@@ -15,9 +15,47 @@ setup_db(app)
 CORS(app)
 
 
-@app.route('/schedule', methods=['GET', 'POST'])
-#@requires_auth('post:schedule')
-def post_schedule():
+"""
+Schedule Section
+"""
+@app.route('/schedules', methods=['GET'])
+@requires_auth('get:schedule')
+def get_schedule(jwt):
+    try:
+        if request.method == 'GET':
+            datetimestr = request.args.get('datetimestr')
+
+            datetime_obj = datetime.strptime(datetimestr, '%Y-%m-%d %H:%M:%S.%f')
+
+            day = get_weekday(datetime_obj.weekday())
+            reservation_time = get_datetime_range(f'{datetime_obj.hour}:{datetime_obj.minute}')
+
+            restaurants = Restaurant.query.all()
+            open_restaurants = []
+
+            for restaurant in restaurants:
+                day_column = get_day_column(restaurant, day)
+
+                start, end = day_column.split('-')
+                start_time = get_datetime_range(start)
+                end_time = get_datetime_range(end)
+                in_time = start_time < reservation_time < end_time
+
+                if in_time:
+                    open_restaurants.append(restaurant.name)
+
+            return jsonify({
+                'success': True,
+                'restaurants': open_restaurants
+            })
+
+    except:
+        abort(404)
+
+
+@app.route('/schedules', methods=['POST'])
+@requires_auth('post:schedule')
+def post_schedule(jwt):
     try:
         if request.method == 'POST':
             if request.files:
@@ -51,35 +89,61 @@ def post_schedule():
                 'success': True
             })
 
-        if request.method == 'GET':
-            datetimestr = request.args.get('datetimestr')
+    except:
+        abort(422)
 
-            datetime_obj = datetime.strptime(datetimestr, '%Y-%m-%d %H:%M:%S.%f')
 
-            day = get_weekday(datetime_obj.weekday())
-            reservation_time = get_datetime_range(f'{datetime_obj.hour}:{datetime_obj.minute}')
+"""
+Patron Section
+"""
+@app.route('/patrons', methods=['POST'])
+@requires_auth('POST:patron')
+def post_patron(jwt):
+    try:
+        if request.method == 'POST':
+            body = request.get_json()
 
-            restaurants = Restaurant.query.all()
-            open_restaurants = []
+            new_name = body['name']
+            new_number = body['number']
+            new_email = body['email']
 
-            for restaurant in restaurants:
-                day_column = get_day_column(restaurant, day)
-
-                start, end = day_column.split('-')
-                start_time = get_datetime_range(start)
-                end_time = get_datetime_range(end)
-                in_time = start_time < reservation_time < end_time
-
-                if in_time:
-                    open_restaurants.append(restaurant.name)
+            patron = Patron(name=new_name,
+                            number=new_number,
+                            email=new_email)
+            patron.insert()
 
             return jsonify({
                 'success': True,
-                'restaurants': open_restaurants
+                'created': patron.id
             })
-
     except:
         abort(422)
+
+
+"""
+Reservation Section
+"""
+@app.route('/reservations', methods=['GET'])
+@requires_auth('get:reservation')
+def get_reservation(jwt):
+    pass
+
+
+@app.route('/reservations', methods=['POST'])
+@requires_auth('POST:reservation')
+def post_reservation(jwt):
+    pass
+
+
+@app.route('/reservations', methods=['PATCH'])
+@requires_auth('PATCH:reservation')
+def patch_reservation(jwt):
+    pass
+
+@app.route('/reservations', methods=['DELETE'])
+@requires_auth('DELETE:reservation')
+def delete_reservation(jwt):
+    pass
 
 
 @app.errorhandler(404)

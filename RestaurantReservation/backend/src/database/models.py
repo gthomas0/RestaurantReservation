@@ -66,6 +66,8 @@ class Patron(db.Model):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    number = Column(String)
+    email = Column(String)
     restaurants = relationship('Reservation', back_populates='patron')
 
     def __init__(self, name):
@@ -75,6 +77,8 @@ class Patron(db.Model):
         return {
             'id': self.id,
             'name': self.name,
+            'number': self.number,
+            'email': self.email,
         }
 
 
