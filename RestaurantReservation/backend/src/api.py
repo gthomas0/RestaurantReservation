@@ -120,6 +120,39 @@ def post_patron(jwt):
         abort(422)
 
 
+@app.route('/patrons/<id>', methods=['PATCH'])
+@requires_auth('PATCH:patron')
+def patch_reservation(jwt, id):
+    if request.method == 'PATCH':
+        patron = Patron.query.get(id)
+
+        if patron:
+            try:
+                body = request.get_json()
+
+                new_name = body.get('name')
+                new_number = body.get('number')
+                new_email = body.get('email')
+
+                if new_name:
+                    patron.name = new_name
+                if new_number:
+                    patron.number = new_number
+                if new_email:
+                    patron.email = new_email
+
+                patron.update()
+
+                return jsonify({
+                    'success': True,
+                    'patron': patron.format()
+                })
+            except:
+                abort(422)
+        else:
+            abort(404)
+
+
 """
 Reservation Section
 """
@@ -134,11 +167,6 @@ def get_reservation(jwt):
 def post_reservation(jwt):
     pass
 
-
-@app.route('/reservations', methods=['PATCH'])
-@requires_auth('PATCH:reservation')
-def patch_reservation(jwt):
-    pass
 
 @app.route('/reservations', methods=['DELETE'])
 @requires_auth('DELETE:reservation')
