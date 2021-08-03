@@ -43,15 +43,24 @@ class Reservation(db.Model):
         self.start_time = start_time
 
     def insert(self):
-        db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
 
     def update(self):
-        db.session.commit()
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
 
     def delete(self):
-        db.session.delete(self)
-        db.session.commit()
+        try:
+            db.session.delete(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
 
     def format(self):
         return {
@@ -70,8 +79,30 @@ class Patron(db.Model):
     email = Column(String)
     restaurants = relationship('Reservation', back_populates='patron')
 
-    def __init__(self, name):
+    def __init__(self, name, number, email):
         self.name = name
+        self.number = number
+        self.email = email
+
+    def insert(self):
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
+
+    def update(self):
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+
+    def delete(self):
+        try:
+            db.session.delete(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
 
     def format(self):
         return {
@@ -109,15 +140,24 @@ class Restaurant(db.Model):
         self.hours = hours
 
     def insert(self):
-        db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
 
     def update(self):
-        db.session.commit()
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
 
     def delete(self):
-        db.session.delete(self)
-        db.session.commit()
+        try:
+            db.session.delete(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
 
     def format(self):
         return {
