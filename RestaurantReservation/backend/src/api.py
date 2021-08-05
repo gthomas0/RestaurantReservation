@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, abort
 from flask_cors import CORS
 from sqlalchemy import exc
 
-from .database.models import setup_db, Restaurant, Patron, db
+from .database.models import setup_db, Restaurant, Patron, Reservation, db
 from .auth.auth import AuthError, requires_auth
 from .utils.date_handler import get_datetime_range, get_day_column, get_day_range, get_time_range, get_weekday
 
@@ -42,7 +42,7 @@ def get_schedules(jwt):
                 in_time = start_time < reservation_time < end_time
 
                 if in_time:
-                    open_restaurants.append(restaurant.name)
+                    open_restaurants.append({'id': restaurant.id, 'name': restaurant.name})
 
             return jsonify({
                 'success': True,
@@ -129,6 +129,25 @@ def delete_schedules(jwt):
 """
 Patron Section
 """
+@app.route('/patrons', methods=['GET'])
+@requires_auth('get:patrons')
+def get_patrons(jwt):
+    try:
+        id = request.args.get('id')
+        if id:
+            # If a specific patron is requested
+            patron = [Patron.query.get(id)]
+        else:
+            # Get all if a specific patron isn't requested
+            patron = Patron.query.all()
+        return jsonify({
+            'success': True,
+            'patrons': [pat.format() for pat in patron]
+        })
+    except:
+        abort(410)
+
+
 @app.route('/patrons', methods=['POST'])
 @requires_auth('post:patrons')
 def post_patrons(jwt):
@@ -161,11 +180,12 @@ def post_patrons(jwt):
 @requires_auth('patch:patrons')
 def patch_patrons(jwt):
     if request.method == 'PATCH':
+        id = request.args.get('id')
         patron = Patron.query.get(id)
 
         if patron:
             try:
-                body = request.get_json()
+                body = request.args
 
                 new_name = body.get('name')
                 new_number = body.get('number')
@@ -177,6 +197,8 @@ def patch_patrons(jwt):
                     patron.number = new_number
                 if new_email:
                     patron.email = new_email
+                if not new_name and not new_number and not new_email:
+                    abort(422)
 
                 patron.update()
 
@@ -224,23 +246,77 @@ def delete_patrons(jwt):
 """
 Reservation Section
 """
-@app.route('/reservations/<id>', methods=['GET'])
+@app.route('/reservations', methods=['GET'])
 @requires_auth('get:reservations')
-def get_reservation(jwt, id):
-    if request.method == 'GET':
-        pass
+def get_reservation(jwt):
+    try:
+        if request.method == 'GET':
+            data = list()
+            reservations = db.session.query(Reservation).join(Patron).join(Restaurant).all()
+
+            for reservation in reservations:
+                rd = {
+                    'restaurant_id': reservation.restaurant_id,
+                    'restaurant_name': reservation.restaurant.name,
+                    'patron_id': reservation.patron_id,
+                    'patron_name': reservation.patron.name,
+                    'start_time': reservation.start_time
+                }
+                data.append(rd)
+
+        return jsonify({
+            'success': True,
+            'reservations': data
+        })
+    except:
+        abort(404)
 
 
 @app.route('/reservations', methods=['POST'])
 @requires_auth('post:reservations')
 def post_reservation(jwt):
-    pass
+    try:
+        if request.method == 'POST':
+            body = request.args
+
+            restaurant_id = body.get('restaurant_id')
+            patron_id = body.get('patron_id')
+            start_time_str = body.get('start_time')
+            start_time = datetime.strptime(start_time_str, '%Y-%m-%d %H:%M:%S.%f')
+            params = {
+                'restaurant_id': restaurant_id,
+                'patron_id': patron_id,
+                'start_time': start_time
+            }
+
+            reservation = Reservation(**params)
+            reservation.insert()
+
+            return jsonify({
+                'success': True,
+                'created': reservation.format()
+            })
+    except:
+        abort(422)
 
 
 @app.route('/reservations', methods=['DELETE'])
 @requires_auth('delete:reservations')
-def delete_reservation(jwt):
-    pass
+def delete_reservations(jwt):
+    try:
+        try:
+            db.session.query(Reservation).delete()
+            db.session.commit()
+
+            return jsonify({
+                'success': True,
+                'delete': 'all'
+            })
+        except:
+            db.session.rollback()
+    except:
+        abort(422)
+
 
 ## Error Handling
 @app.errorhandler(AuthError)
@@ -250,6 +326,7 @@ def auth_error(error):
         "error": error.status_code,
         "message": error.error
     }), 401
+
 
 @app.errorhandler(404)
 def resource_not_found(error):
@@ -267,3 +344,12 @@ def unprocessable(error):
         "error": 422,
         "message": "unprocessable"
     }), 422
+
+
+@app.errorhandler(410)
+def gone(error):
+    return jsonify({
+        "success": False,
+        "error": 410,
+        "message": "gone"
+    }), 410
