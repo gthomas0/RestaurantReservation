@@ -5,8 +5,8 @@ import socket
 
 
 HOSTNAME = socket.gethostbyname(socket.gethostname())
-ADMIN_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InMyanZ1T01WSzlLTl9SY1l5eUxCRyJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtZ3QudXMuYXV0aDAuY29tLyIsInN1YiI6IlE3VXhQMmZ6ZU9qZGtZdTY5UkxHWHdGRzRRZ2VHSkFIQGNsaWVudHMiLCJhdWQiOiJzY2hlZHVsZXIiLCJpYXQiOjE2MjgxMzQ3NjQsImV4cCI6MTYyODIyMTE2NCwiYXpwIjoiUTdVeFAyZnplT2pka1l1NjlSTEdYd0ZHNFFnZUdKQUgiLCJzY29wZSI6InBvc3Q6c2NoZWR1bGVzIGdldDpzY2hlZHVsZXMgZGVsZXRlOnNjaGVkdWxlcyBwb3N0OnBhdHJvbnMgcGF0Y2g6cGF0cm9ucyBnZXQ6cmVzZXJ2YXRpb25zIHBvc3Q6cmVzZXJ2YXRpb25zIGdldDpwYXRyb25zIGRlbGV0ZTpwYXRyb25zIGRlbGV0ZTpyZXNlcnZhdGlvbnMiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMiLCJwZXJtaXNzaW9ucyI6WyJwb3N0OnNjaGVkdWxlcyIsImdldDpzY2hlZHVsZXMiLCJkZWxldGU6c2NoZWR1bGVzIiwicG9zdDpwYXRyb25zIiwicGF0Y2g6cGF0cm9ucyIsImdldDpyZXNlcnZhdGlvbnMiLCJwb3N0OnJlc2VydmF0aW9ucyIsImdldDpwYXRyb25zIiwiZGVsZXRlOnBhdHJvbnMiLCJkZWxldGU6cmVzZXJ2YXRpb25zIl19.Vs0J_z7fAg8zVZpal1yax6Vep7CFM3uuwQpWYRIaUDXmvkkcHJWJqwMbEsE6XfJuKa9j7T4lSY8KwquaiYiJjV-Hao-ax82Nhh_-nsVml4BZs8aPXJVdEKobZO7_y0or5hmaRUrKvuLkJpMptD0-JYobOMaNfE9o6esFeuIiYDJkCWdaOUtJ25k3-bCsvdJbYuSKWqWb1f55K873VEYnhCqhGLlH6q8mLIX41EmXdSU1jl1ZUHaCcMo-lY6FF96oMrariYW7GRbdT3ogT3fUqt0AOxeEVpDn28PMRHtUcV5z3IODzHRNgKDSsge1hS68g7YZiWflQmj6zWmMZz0B_Q'
-PATRON_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InMyanZ1T01WSzlLTl9SY1l5eUxCRyJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtZ3QudXMuYXV0aDAuY29tLyIsInN1YiI6IlE3VXhQMmZ6ZU9qZGtZdTY5UkxHWHdGRzRRZ2VHSkFIQGNsaWVudHMiLCJhdWQiOiJzY2hlZHVsZXIiLCJpYXQiOjE2MjgxMjY0MTcsImV4cCI6MTYyODIxMjgxNywiYXpwIjoiUTdVeFAyZnplT2pka1l1NjlSTEdYd0ZHNFFnZUdKQUgiLCJzY29wZSI6ImdldDpzY2hlZHVsZXMiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMiLCJwZXJtaXNzaW9ucyI6WyJnZXQ6c2NoZWR1bGVzIl19.UN_Mmaf8iedaZbrj3OA5teFze2RVM83jQlyATUMDx1w86GIgxCO3EedrK6YrI-CzH4I5a4dk9wIro0zLCJObAUxYTBW9X_tcV-qB7uQ4olrxov_EbQw7EFaRBpRqvkCjSuDKNkx8NqpoxqQGW3wMfV3hbMmByzsVdUz-dkNVN6ZUbT97BQhGo_90x25G8lk5c5PxBEexhB9aGOGCNn8osVHKT2Vq75QUftg40F9hTNs35MMYVOtreO71C-ec344W6GzneLWkgBygCzj4mbhG7npF_c8NHkC5927qqyX-P0rhfscI3ZKMzDlyZUQ_ADc7NTcJocJkDQ3jusLNSEchBw'
+ADMIN_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InMyanZ1T01WSzlLTl9SY1l5eUxCRyJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtZ3QudXMuYXV0aDAuY29tLyIsInN1YiI6IlE3VXhQMmZ6ZU9qZGtZdTY5UkxHWHdGRzRRZ2VHSkFIQGNsaWVudHMiLCJhdWQiOiJzY2hlZHVsZXIiLCJpYXQiOjE2MjgyMTI2ODYsImV4cCI6MTYyODI5OTA4NiwiYXpwIjoiUTdVeFAyZnplT2pka1l1NjlSTEdYd0ZHNFFnZUdKQUgiLCJzY29wZSI6InBvc3Q6c2NoZWR1bGVzIGdldDpzY2hlZHVsZXMgZGVsZXRlOnNjaGVkdWxlcyBwb3N0OnBhdHJvbnMgcGF0Y2g6cGF0cm9ucyBnZXQ6cmVzZXJ2YXRpb25zIHBvc3Q6cmVzZXJ2YXRpb25zIGdldDpwYXRyb25zIGRlbGV0ZTpwYXRyb25zIGRlbGV0ZTpyZXNlcnZhdGlvbnMiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMiLCJwZXJtaXNzaW9ucyI6WyJwb3N0OnNjaGVkdWxlcyIsImdldDpzY2hlZHVsZXMiLCJkZWxldGU6c2NoZWR1bGVzIiwicG9zdDpwYXRyb25zIiwicGF0Y2g6cGF0cm9ucyIsImdldDpyZXNlcnZhdGlvbnMiLCJwb3N0OnJlc2VydmF0aW9ucyIsImdldDpwYXRyb25zIiwiZGVsZXRlOnBhdHJvbnMiLCJkZWxldGU6cmVzZXJ2YXRpb25zIl19.UN3j3bkdruWj-jxAxIdIhGOT-ZJbbQZoq8zv8KNKBZwZWVfb1rZKj4Iq6ME0BtFTEEtsAqO8xWDOjwWshO3G0wcK7HhCvT3bmjkcCOWPa0Ssd4KLahAAWap7ZbqTX9_vh3o6Q2GZzZMM7B3wM9EiNRejCcHbAqeMuZyT7AlRaK3BDTzJ0-4ZqeOYgfZWY5BsLlCB7DWBmImW-dk9PXYJ8Xpr72Gwg5xZ9-GS-X1cZCNdtHl__LXBhUSVb-P_PXFqbNdDpbhnVIt-VG5mzpkhtvktJVwDE3Wmjib5MnW2ln8LeQSHyKdLA3A9On0WSwN_34Yg9tkragZE3neJ1WiqxQ'
+PATRON_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InMyanZ1T01WSzlLTl9SY1l5eUxCRyJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtZ3QudXMuYXV0aDAuY29tLyIsInN1YiI6IlE3VXhQMmZ6ZU9qZGtZdTY5UkxHWHdGRzRRZ2VHSkFIQGNsaWVudHMiLCJhdWQiOiJzY2hlZHVsZXIiLCJpYXQiOjE2MjgyMTI3MTAsImV4cCI6MTYyODI5OTExMCwiYXpwIjoiUTdVeFAyZnplT2pka1l1NjlSTEdYd0ZHNFFnZUdKQUgiLCJzY29wZSI6ImdldDpzY2hlZHVsZXMiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMiLCJwZXJtaXNzaW9ucyI6WyJnZXQ6c2NoZWR1bGVzIl19.o-RC7u2hmIPA2kB4nHRHCHzYXp_M_O8rhSi-ggTGIwu8MJJcjubslK7bvxN9rFTbRRM7gSqNSYPdtlq6mKDfKo-_5bmEM4xF22UYmLJDLZJOEqvskB4r3G087XsI534XUcmmbHKpnOcJCDwGVSmsuUiSjg623OTvybhEfoVjaTWSizMejumeHQeQtCH5DQZZn6hbEjBY4X_1U5C3Jh3Nag7Oy4lUJy1jIUlN8Pbn47vPmlT2TWTq6IdTI4RaBuBAQU6o0vIThIafUuehdT8nQnjOrKHYHsTt48S-4MUrYDxKyE31ot0ElQszn87EcYiAUhNc7QIRMZxiQuJSDNAbnQ'
 
 ## post_schedules
 def test_200_admin_add_schedules():
@@ -96,7 +96,7 @@ def test_200_admin_post_patrons():
     req = requests.post(
         f'http://{HOSTNAME}:5000/patrons',
         headers=headers,
-        params={
+        json={
             'name': 'Greg',
             'number': '555-555-5555',
             'email': 'fake_email@gmail.com'
@@ -111,7 +111,7 @@ def test_422_admin_post_patrons():
     req = requests.post(
         f'http://{HOSTNAME}:5000/patrons',
         headers=headers,
-        params={
+        json={
             'name': 'Greg',
             'number': '555-555-5555'
         }
@@ -136,7 +136,7 @@ def test_410_admin_get_patron():
     req = requests.get(
         f'http://{HOSTNAME}:5000/patrons',
         headers=headers,
-        params={'id': -1}
+        json={'id': -1}
     )
     assert req.status_code == 410
     assert req.json().get('success') == False
@@ -158,7 +158,7 @@ def test_200_admin_patch_patron():
     req = requests.patch(
         f'http://{HOSTNAME}:5000/patrons',
         headers=headers,
-        params={
+        json={
             'id': id,
             'name': 'Joe'
         }
@@ -173,7 +173,7 @@ def test_410_admin_patch_patron():
     req = requests.patch(
         f'http://{HOSTNAME}:5000/patrons',
         headers=headers,
-        params={
+        json={
             'id': -1,
             'name': 'Joe'
         }
@@ -196,7 +196,7 @@ def test_422_admin_patch_patron():
     req = requests.patch(
         f'http://{HOSTNAME}:5000/patrons',
         headers=headers,
-        params={
+        json={
             'id': id
         }
     )
@@ -227,7 +227,7 @@ def test_200_admin_post_reservations():
     req = requests.post(
         f'http://{HOSTNAME}:5000/reservations',
         headers=headers,
-        params={
+        json={
             'restaurant_id': restaurant_id,
             'patron_id': patron_id,
             'start_time': '2021-05-27 12:23:53.350219'
@@ -250,7 +250,7 @@ def test_422_admin_post_reservations():
     req = requests.post(
         f'http://{HOSTNAME}:5000/patrons',
         headers=headers,
-        params={
+        json={
             'start_time': '2021-05-27 12:23:53.350219'
         }
     )

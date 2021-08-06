@@ -98,7 +98,10 @@ def post_schedules(jwt):
 @app.route('/schedules', methods=['DELETE'])
 @requires_auth('delete:schedules')
 def delete_schedules(jwt):
-    id = request.args.get('id')
+    data = request.get_json(silent=True)
+    id = None
+    if data:
+        id = data.get('id')
 
     try:
         if id:
@@ -133,7 +136,10 @@ Patron Section
 @requires_auth('get:patrons')
 def get_patrons(jwt):
     try:
-        id = request.args.get('id')
+        data = request.get_json(silent=True)
+        id = None
+        if data:
+            id = data.get('id')
         if id:
             # If a specific patron is requested
             patron = [Patron.query.get(id)]
@@ -153,7 +159,7 @@ def get_patrons(jwt):
 def post_patrons(jwt):
     try:
         if request.method == 'POST':
-            body = request.args
+            body = request.get_json(silent=True)
 
             new_name = body.get('name')
             new_number = body.get('number')
@@ -180,12 +186,15 @@ def post_patrons(jwt):
 @requires_auth('patch:patrons')
 def patch_patrons(jwt):
     if request.method == 'PATCH':
-        id = request.args.get('id')
+        data = request.get_json(silent=True)
+        id = None
+        if data:
+            id = data.get('id')
         patron = Patron.query.get(id)
 
         if patron:
             try:
-                body = request.args
+                body = request.get_json(silent=True)
 
                 new_name = body.get('name')
                 new_number = body.get('number')
@@ -215,7 +224,10 @@ def patch_patrons(jwt):
 @app.route('/patrons', methods=['DELETE'])
 @requires_auth('delete:patrons')
 def delete_patrons(jwt):
-    id = request.args.get('id')
+    data = request.get_json(silent=True)
+    id = None
+    if data:
+        id = data.get('id')
 
     try:
         if id:
@@ -277,7 +289,7 @@ def get_reservation(jwt):
 def post_reservation(jwt):
     try:
         if request.method == 'POST':
-            body = request.args
+            body = request.get_json(silent=True)
 
             restaurant_id = body.get('restaurant_id')
             patron_id = body.get('patron_id')

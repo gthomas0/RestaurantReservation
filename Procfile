@@ -1,0 +1,1 @@
+web: gunicorn RestaurantReservation.backend.src.api:app

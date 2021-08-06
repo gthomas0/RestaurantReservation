@@ -9,7 +9,12 @@ DB_HOST = os.getenv('DB_HOST', '127.0.0.1:5432')
 DB_USER = os.getenv('DB_USER', 'postgres')
 DB_PASS = os.getenv('DB_PASSWORD', 'postgres')
 DB_NAME = os.getenv('DB_NAME', 'restaurants')
-database_path = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}"
+db_path = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}"
+database_path = os.getenv('DATABASE_URL', db_path)
+
+# Handle Heroku database url missing correct psql language
+if 'postgresql' not in database_path:
+    database_path = database_path.replace('postgres', 'postgresql')
 
 db = SQLAlchemy()
 
