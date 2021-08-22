@@ -9,7 +9,12 @@ DB_HOST = os.getenv('DB_HOST', '127.0.0.1:5432')
 DB_USER = os.getenv('DB_USER', 'postgres')
 DB_PASS = os.getenv('DB_PASSWORD', 'postgres')
 DB_NAME = os.getenv('DB_NAME', 'restaurants')
-database_path = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}"
+db_path = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}"
+database_path = os.getenv('DATABASE_URL', db_path)
+
+# Handle Heroku database url missing correct psql language
+if 'postgresql' not in database_path:
+    database_path = database_path.replace('postgres', 'postgresql')
 
 db = SQLAlchemy()
 
@@ -43,15 +48,24 @@ class Reservation(db.Model):
         self.start_time = start_time
 
     def insert(self):
-        db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
 
     def update(self):
-        db.session.commit()
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
 
     def delete(self):
-        db.session.delete(self)
-        db.session.commit()
+        try:
+            db.session.delete(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
 
     def format(self):
         return {
@@ -66,15 +80,41 @@ class Patron(db.Model):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    number = Column(String)
+    email = Column(String)
     restaurants = relationship('Reservation', back_populates='patron')
 
-    def __init__(self, name):
+    def __init__(self, name, number, email):
         self.name = name
+        self.number = number
+        self.email = email
+
+    def insert(self):
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
+
+    def update(self):
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+
+    def delete(self):
+        try:
+            db.session.delete(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
 
     def format(self):
         return {
             'id': self.id,
             'name': self.name,
+            'number': self.number,
+            'email': self.email,
         }
 
 
@@ -105,15 +145,24 @@ class Restaurant(db.Model):
         self.hours = hours
 
     def insert(self):
-        db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
 
     def update(self):
-        db.session.commit()
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
 
     def delete(self):
-        db.session.delete(self)
-        db.session.commit()
+        try:
+            db.session.delete(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
 
     def format(self):
         return {
