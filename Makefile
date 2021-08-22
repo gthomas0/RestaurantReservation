@@ -11,3 +11,6 @@ api:
 
 postgres:
 	docker exec -it restaurantreservation_postgres-db_1 psql -U postgres
+
+test:
+	docker exec restaurantreservation_api_1 bash -c '. /api/.venv/bin/activate; pytest'

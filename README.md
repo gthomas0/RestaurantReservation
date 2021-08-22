@@ -1,5 +1,5 @@
 # Restaurant Reservation Application
-
+This Restaurant Reservation project is meant to be an API that would support a service that would allow restaurants to post schedules for customers to be able to set up reservations. This app would allow customers to make a reservation to different restaurants, or even just query for what the schedules are for the restaurants. All the restaurants in the sample data are local to where I am personally.
 ### Dependencies
 In order for this application to run, some dependencies need to be installed.  
   * **Docker** This is the best way to run the application
@@ -12,43 +12,22 @@ To start the application, from the root directory run the following:
 make build
 ```
 
-After the docker services are running, post the csv file to the database:
+### Backend README
+Check out the [`Backend README`](./RestaurantReservation/backend/README.md) for more information on the API endpoints!  
+The Backend README goes over API authentications and API endpoints.
 
-```bash
-curl -F "schedule=@$(pwd)/RestaurantReservation/backend/csv_data/schedule.csv" http://localhost:5000/schedule
-```
+### Makefile Commands
+`make build`
+ - Runs docker-compose for the project. This sets everything up for you!
 
-Now you can query the `/schedule` endpoint for open restaurants!
+`make develop`
+ - This sets up just the API. If you ran `make build`, you do not need to run this.
 
-## API Endpoints
+`make api`
+ - This executes bash in an interactive terminal within the API container built by the `make build` command.
 
-`POST '/schedule'`
-- Post a csv file containing the restaurant schedules to populate the postgresql database
-- Request Arguments: csv file
-- Example cURL: `curl -F "schedule=@$(pwd)/RestaurantReservation/backend/csv_data/schedule.csv" http://localhost:5000/schedule`
-- Example Response:
-```json
-{
-  "success": true
-}
-```
+`make postgres`
+ - This executes psql in an interactive terminal within the PostgresQL container built by the `make build` command.
 
-`GET '/schedule'`
-- Get a list of restaurant names which are open on a given day and time
-- Request Arguments: Python Datetime String
-- Example cURL: `curl -G --data-urlencode "datetimestr=2021-05-27 12:23:53.350219" http://localhost:5000/schedule`
-- Example Response:
-```json
-{
-  "restaurants": [
-    "The Cowfish Sushi Burger Bar",  
-    "Mandolin", 
-    "Neomonde", 
-    "Page Road Grill", 
-    "Mez Mexican", 
-    "Saltbox", 
-    "El Rodeo"
-  ], 
-  "success": true
-}
-```
+`make test`
+ - This initializes the python venv and runs pytest within the API container built by the `make build` command.
